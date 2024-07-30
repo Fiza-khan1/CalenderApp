@@ -1,0 +1,27 @@
+{%extends 'base.html'%}
+{%block content%}
+  <div class="container my-4">
+    <h2 class="mb-4">Events List</h2>
+    {% for event in Event %}
+    <div class="card mb-3">
+      <div class="card-header">Event Details</div>
+      <div class="card-body">
+        <h5 class="card-title">Name: {{ event.person }}</h5>
+        <p class="card-text">
+          <strong>Day:</strong> {{ event.day }}<br />
+          <strong>Start Date:</strong> {{ event.start_date }}<br />
+          <strong>End Date:</strong> {{ event.end_date }}<br />
+          <strong>Notes:</strong> {{ event.notes }}
+        </p>
+      </div>
+      <div class="card-footer text-right">
+        {% if request.user == event.person %}
+        <a href="{% url 'edit' event.id %}" class="btn btn-primary btn-sm">Edit</a>
+        <a href="{% url 'delete' event.id %}" class="btn btn-danger btn-sm">Delete</a>
+        {% endif %}
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+
+{%endblock%}

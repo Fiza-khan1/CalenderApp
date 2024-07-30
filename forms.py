@@ -20,11 +20,11 @@ class EventForm(forms.ModelForm):
             'end_date': forms.TimeInput(attrs={'type': 'time'}),
             'notes': forms.Textarea(attrs={'rows': 4}),
         }
-        labels={
-            'Day':'START_DATE',
-            'start_date':'START_Time',
-            'end_date':'END_TIME',
-            'notes':'ADD EVENTS'
+        labels = {
+            'day': 'Date',
+            'start_date': 'Start Time',
+            'end_date': 'End Time',
+            'notes': 'Event Notes'
         }
 
 

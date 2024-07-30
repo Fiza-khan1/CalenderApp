@@ -12,5 +12,6 @@ urlpatterns = [
     path('delete/<int:id>/',views.deleteEvent,name='delete'),
     path('edit/<int:id>/',views.EditEvent,name='edit'),
     path('deleting/',views.deleting,name='delete'),
-    path('profile/<int:id>/',views.Profile,name='profile')
+    path('profile/<int:id>/',views.Profile,name='profile'),
+    path('PersonalEvents/',views.PersonalEvents,name='P_events')
 ]

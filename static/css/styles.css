@@ -1,0 +1,23 @@
+.dropdown:hover .dropdown-menu {
+      display: block;
+    }
+body{
+    background-color: black;
+}
+    /* Optional: Add some space between the button and the dropdown menu */
+.dropdown-menu {
+      margin-top: 0.125rem; /* Adjust as needed */
+    }
+
+    /* Optional: Add some styling to the button */
+    .btn-primary {
+      background-color: #007bff; /* Bootstrap primary color */
+      border: none;
+    }
+
+    /* Optional: Adjust dropdown item styling */
+    .dropdown-item {
+      padding: 0.5rem 1rem;
+    }
+
+

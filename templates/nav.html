@@ -1,26 +1,39 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark ">
-    <a class="navbar-brand" href="#">Calender</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarNav">
-      <ul class="navbar-nav">
-          <li class="nav-item active  justify-content-end">
-            <a class="nav-link" href="{%url 'login'%}">Log in <span class="sr-only">(current)</span></a>
-          </li>
-          <li class="nav-item active  justify-content-end">
-            <a class="nav-link" href="{%url 'logout'%}">Log Out <span class="sr-only">(current)</span></a>
-          </li>
-          <li class="nav-item active">
-            <a class="nav-link" href="{%url 'signIn'%}">SIGN IN <span class="sr-only">(current)</span></a>
-          </li>
-          <li class="nav-item active">
-            <a class="nav-link" href="{%url 'profile' request.user.id%}">{{request.user}}<span class="sr-only">(current)</span></a>
 
-          </li>
-          <li class="nav-item active">
-            <a class="nav-link" href="{%url 'dashboard'%}">View Events <span class="sr-only">(current)</span></a>
-          </li>
-      </ul>
-    </div>
-  </nav>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <a class="navbar-brand" href="{% url 'home' %}">Calendar</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarNav">
+    <ul class="navbar-nav ml-auto">
+      {% if not request.user.is_authenticated %}
+        <li class="nav-item active">
+          <a class="nav-link" href="{% url 'login' %}">Log in <span class="sr-only">(current)</span></a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="{% url 'signIn' %}">Sign In <span class="sr-only">(current)</span></a>
+        </li>
+      {% else %}
+        <li class="nav-item active">
+          <a class="nav-link" href="{% url 'logout' %}">Log Out <span class="sr-only">(current)</span></a>
+        </li>
+
+        <li class="nav-item dropdown ">
+          <a class="nav-link dropdown-toggle text-white" href="#" id="dropdownMenuButton" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            {{request.user}}
+          </a>
+          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <a class="dropdown-item" href="{% url 'profile' request.user.id %}">Profile</a>
+            <a class="dropdown-item" href="{% url 'P_events' %}">View Your events</a>
+         
+          </div>
+        </li>
+
+        <li class="nav-item active">
+          <a class="nav-link" href="{% url 'dashboard' %}">View Others Event <span class="sr-only">(current)</span></a>
+        </li>
+      {% endif %}
+    </ul>
+  </div>
+</nav>
+

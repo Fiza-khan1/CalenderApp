@@ -5,7 +5,8 @@ from django.contrib.auth import authenticate,login,logout
 from .models import Events
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
-
+from django.http import HttpResponse
+from django.core.paginator import Paginator
 
 def sign_in(request):
     if request.method=='POST':
@@ -33,7 +34,7 @@ def FormCalender(request):
         else:
             messages.error(request,"Correct the errors below")
     form=EventForm()
-    return render(request,'base.html',{'form':form})
+    return render(request,'dashboard.html',{'form':form})
 
 def userlogin(request):
     if request.method=='POST':
@@ -66,9 +67,12 @@ def userlogut(request):
     return redirect('login')
 
 def dashboard(request):
-     event=Events.objects.all()
-     print(event)
-     return render(request,'displayEvent.html',{'Event':event})
+    event=Events.objects.all()
+    paginator = Paginator(event, 2)
+    page_number = request.GET.get("page")
+    page_obj = paginator.get_page(page_number)
+    print(event)
+    return render(request,'displayEvent.html',{'Event':event,"page_obj": page_obj})
 
 
 def EditEvent(request,id):
@@ -109,6 +113,13 @@ def deleting(request):
 def Profile(request,id):
      user=User.objects.get(id=id) 
      return render(request,'profile.html',{'User':user})
+
+
+def PersonalEvents(request):
+     
+     event=Events.objects.filter(person=request.user)
+     print(event)
+     return render(request,'personalEvents.html',{'Event':event})
 
 
 
