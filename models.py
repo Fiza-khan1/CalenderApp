@@ -22,7 +22,6 @@ class Events(models.Model):
 
 
 
-
 # idgets = {
 #             'guest_author': forms.TextInput(attrs={'class': 'form-control input'}),
 #             'title': forms.TextInput(attrs={'class': 'form-control input'}),

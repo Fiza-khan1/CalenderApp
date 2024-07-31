@@ -7,17 +7,99 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.http import HttpResponse
 from django.core.paginator import Paginator
+from rest_framework import  viewsets
+from .sevilizers import EventSerializer,BookSerializer
+from rest_framework import generics
+from .models import Events
 
-def sign_in(request):
+
+
+class EventCreateList(generics.ListCreateAPIView):
+     serializer_class=BookSerializer
+     queryset=Events.objects.all()
+
+class EventUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
+     serializer_class=BookSerializer
+     queryset=Events.objects.all()
+
+
+class UserViewSet(viewsets.ModelViewSet):
+    queryset = User.objects.all()
+    serializer_class = EventSerializer
+
+    
+class BookViewSet(viewsets.ModelViewSet):
+     queryset=Events.objects.all()
+     serializer_class=BookSerializer
+
+
+def Test(request,id):
+     person=User.objects.get(id=id)
+     PersonEvent=Events.objects.filter(person=person)
+     print('Person Event = ',PersonEvent)
+     return render(request,'test.html',{'P_event':PersonEvent})
+  
+
+
+
+# def sign_in(request):
+#     if request.method=='POST':
+#         form=sign_up(request.POST)
+#         if form.is_valid():
+#             form.save()
+#             messages.success(request,'Sign Up created successfully')
+#         else:
+#             messages.error(request,'Some errors occur ')
+#     form=sign_up()
+
+#     return render(request,'sign_in.html',{'form':form})
+# import os
+
+# from django.http import HttpResponse
+# from django.shortcuts import render, redirect
+# from django.views.decorators.csrf import csrf_exempt
+# from google.oauth2 import id_token
+# from google.auth.transport import requests
+
+
+def userSignup(request):
     if request.method=='POST':
-        form=sign_up(request.POST)
-        if form.is_valid():
-            form.save()
-            messages.success(request,'Sign Up created successfully')
-        else:
-            messages.error(request,'Some errors occur ')
+         form=sign_up(request.POST)
+         if form.is_valid():
+              form.save()
+              messages.success(request,'Sign up created successfully')
+              return redirect('dashboard')
+         else:
+              messages.error(request,'Some errors occur')
     form=sign_up()
-    return render(request,'sign_in.html',{'form':form})
+    return render(request, 'sign_in.html',{'form':form})
+
+
+# @csrf_exempt
+# def auth_receiver(request):
+#     """
+#     Google calls this URL after the user has signed in with their Google account.
+#     """
+#     print('Inside')
+#     token = request.POST['credential']
+
+#     try:
+#         user_data = id_token.verify_oauth2_token(
+#             token, requests.Request(), os.environ['GOOGLE_OAUTH_CLIENT_ID']
+#         )
+#     except ValueError:
+#         return HttpResponse(status=403)
+
+#     # In a real app, I'd also save any new user here to the database.
+#     # You could also authenticate the user here using the details from Google (https://docs.djangoproject.com/en/4.2/topics/auth/default/#how-to-log-a-user-in)
+#     request.session['user_data'] = user_data
+
+#     return redirect('sign_in')
+
+
+# def sign_out(request):
+#     del request.session['user_data']
+#     return redirect('sign_in')
 
 def FormCalender(request):
     if request.method=='POST':
@@ -37,7 +119,9 @@ def FormCalender(request):
     return render(request,'dashboard.html',{'form':form})
 
 def userlogin(request):
-    if request.method=='POST':
+    if request.user.is_authenticated:
+        return redirect('dashboard')
+    elif request.method=='POST':
                         form=LoginForm(request,request.POST)
                         if form.is_valid():
                             print('form',form)
@@ -51,7 +135,7 @@ def userlogin(request):
                                 print(user)
                                 login(request,user)
                                 messages.success(request,'Login Created Successfully')   
-                                return redirect('home')           
+                                return redirect('dashboard')           
                             else:
                                 messages.error(request,'Correct Some errors below')
 
@@ -115,8 +199,7 @@ def Profile(request,id):
      return render(request,'profile.html',{'User':user})
 
 
-def PersonalEvents(request):
-     
+def PersonalEvents(request):    
      event=Events.objects.filter(person=request.user)
      print(event)
      return render(request,'personalEvents.html',{'Event':event})
