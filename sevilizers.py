@@ -10,7 +10,6 @@ class EventSerializer(serializers.ModelSerializer):
 class BookSerializer(serializers.ModelSerializer):
     class Meta:
         model=Events
-        # fields=['person', 'day','start_date','notes']
         exclude=['end_date']
 
         

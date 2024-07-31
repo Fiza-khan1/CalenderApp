@@ -3,7 +3,7 @@ from django.contrib.auth.models import AbstractUser
 from django.contrib.auth.models import User
 
 class Events(models.Model):
-    person=models.ForeignKey(User,on_delete=models.CASCADE, null=True)
+    person = models.ForeignKey(User,related_name="events" ,on_delete=models.CASCADE)
     day=models.DateField()
     start_date=models.TimeField()
     end_date=models.TimeField(null=True,blank=True)
